@@ -17,6 +17,7 @@
 ;; Inspect circuit
 ;; (.-nConstraints circuit)
 
+;; Trusted setup
 (defn trusted-setup! [circuit]
   (let [setup ((. zksnark/groth -setup) circuit)]
     (do
@@ -30,3 +31,10 @@
         "utf-8"))))
 
 ;; (trusted-setup! circuit)
+
+;; Generate proof
+(def input
+  (clj->js {"a" "123"
+            "b" "456"}))
+
+(def witness (. circuit calculateWitness input))
