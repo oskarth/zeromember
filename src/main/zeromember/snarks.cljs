@@ -38,3 +38,23 @@
             "b" "456"}))
 
 (def witness (. circuit calculateWitness input))
+
+(def vk-proof
+  (zksnark/unstringifyBigInts
+    (.parse js/JSON
+            (fs/readFileSync "snarks/circuit.vk_proof" "utf-8"))))
+
+(def raw-proof (. zksnark/groth genProof vk-proof witness))
+(def proof (get (js->clj raw-proof) "proof"))
+(def public-signals (get (js->clj raw-proof) "publicSignals"))
+
+;; Verifier
+(def vk-verifier
+  (zksnark/unstringifyBigInts
+    (.parse js/JSON
+            (fs/readFileSync "snarks/circuit.vk_verifier" "utf-8"))))
+
+(. zksnark/groth isValid vk-verifier
+   (clj->js proof)
+   (clj->js public-signals))
+;; => true

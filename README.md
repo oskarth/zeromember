@@ -6,8 +6,6 @@ What do we want to do? We want to do SNARKs. And have a button that proves and v
 
 ## TODO
 
-- generate proof
-- validate proof
 - serve the various assets from fs for browser usage
 - use semaphore
 - hook up to github
