@@ -1,7 +1,8 @@
 (ns zeromember.app
   (:require
     [goog.dom :as gdom]
-    [rum.core :as rum]))
+    [rum.core :as rum]
+    [zeromember.snarks :as snarks]))
 
 (defonce app-state (atom {:text "Zeromember"}))
 
