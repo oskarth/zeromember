@@ -5,7 +5,7 @@
   "src/test"]
 
  :dependencies
- []
+ [[rum "0.11.4"]]
 
  :dev-http {8080 "public"}
 
