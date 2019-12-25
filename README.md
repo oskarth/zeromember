@@ -6,6 +6,6 @@ What do we want to do? We want to do SNARKs. And have a button that proves and v
 
 ## TODO
 
-- serve the various assets from fs for browser usage
+- Prove hook up to actual prover from browser
 - use semaphore
 - hook up to github
