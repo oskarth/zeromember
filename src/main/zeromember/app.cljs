@@ -14,12 +14,14 @@
 
 ;; When making it reactive we get the following error:
 ;; Warning: componentWillReceiveProps has been renamed, and is not recommended for use.
+;; See https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 (rum/defc hello-world < rum/reactive []
   [:div
    [:h1 (:text @app-state)]
    [:h3 "test ok"]
-   [:button {:on-click #(println "Hi")} "Prove"]
-   [:p (str (.-nConstraints (:circuit (rum/react app-state))))]])
+   [:button {:on-click #(snarks/prove (:circuit @app-state))} "Prove"]
+   [:p (str (.-nConstraints (:circuit (rum/react app-state))))]
+   [:p (str (:vk-proof (rum/react app-state)))]])
 
 (defn mount [el]
   (rum/mount (hello-world) el))
@@ -27,7 +29,7 @@
 (defn mount-app-element []
   (when-let [el (get-app-element)]
     (snarks/load-everything!
-      #(swap! app-state assoc :circuit %))
+      (fn [[k v]] (swap! app-state assoc k v)))
     (mount el)))
 
 (mount-app-element)
