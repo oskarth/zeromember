@@ -42,6 +42,7 @@
                     (fs/readFileSync "snarks/circuit.json" "utf-8")))))
 
 ;; Load all circuit assets and pass back to app
+;; This is async so will happen after
 (defn load-everything! [success-fn]
   (let [c (async/chan)]
     (load-circuit! c)

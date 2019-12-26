@@ -12,12 +12,14 @@
 (defn get-app-element []
   (gdom/getElement "app"))
 
-(rum/defc hello-world []
+;; When making it reactive we get the following error:
+;; Warning: componentWillReceiveProps has been renamed, and is not recommended for use.
+(rum/defc hello-world < rum/reactive []
   [:div
    [:h1 (:text @app-state)]
    [:h3 "test ok"]
    [:button {:on-click #(println "Hi")} "Prove"]
-   [:p (str (.-nConstraints (:circuit @app-state)))]])
+   [:p (str (.-nConstraints (:circuit (rum/react app-state))))]])
 
 (defn mount [el]
   (rum/mount (hello-world) el))
