@@ -21,7 +21,7 @@
    [:h3 "test ok"]
    [:button
     {:on-click (fn []
-                 (let [prf (snarks/prove
+                 (let [prf (snarks/prove-wasm
                              (:circuit @app-state)
                              (:vk-proof @app-state))]
                    (println "Received prf" prf)))}

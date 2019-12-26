@@ -6,6 +6,8 @@ What do we want to do? We want to do SNARKs. And have a button that proves and v
 
 ## TODO
 
-- Prove hook up to actual prover from browser
+- use websnarks
+- verify
+- snazz up ui
 - use semaphore
 - hook up to github

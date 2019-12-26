@@ -3,7 +3,20 @@
     [clojure.core.async :as async
      :refer [go chan put! alts!]]
     ["fs" :as fs]
-    ["snarkjs" :as zksnark]))
+    ["snarkjs" :as zksnark]
+;;    ["worker_threads" :as worker_threads]
+;;    ["websnark" :as websnark]
+
+    ))
+
+;; Error in frontend compilation when including websnarks
+;; No such JS dependency in npm
+;;    The required JS dependency "worker_threads" is not available, it was required by "node_modules/websnark/src/bn128.js".
+;;    ["websnark" :as websnark]
+;;
+;; Possible we can "--experimental-worker" flag to enable it. Same error for node v122, where it is no longer experimental.
+;; But also not clear how that'd help with browser usage
+;; It is an internal dependency https://nodejs.org/docs/latest-v12.x/api/worker_threads.html but I don't know how to include it.
 
 ;; We need to separate what can happen in node and in browser
 
@@ -76,6 +89,19 @@
 (def static-input
   (clj->js {"a" "123"
             "b" "456"}))
+
+;;     window.groth16GenProof
+
+;; XXX: witness probably different
+;; pkey.slice is not a function, so probably diff here
+;; TODO: HERE ATM https://github.com/iden3/websnark#important-please-be-sure-you-run-your-setup-with---protocol-groth--websnark-only-generates-groth16-proofs
+;; I'd like to run this in node at least, to get the binary rep
+;; Especially as it is a witness, f(input)
+(defn prove-wasm [circuit vk-proof]
+  (let [input static-input
+        witness (. circuit calculateWitness input)]
+    (-> (.groth16GenProof js/window witness vk-proof)
+        (.then #(println "wasm proof" %)))))
 
 (defn prove [circuit vk-proof]
   (let [input static-input
