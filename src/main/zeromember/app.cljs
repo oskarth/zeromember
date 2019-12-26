@@ -19,7 +19,13 @@
   [:div
    [:h1 (:text @app-state)]
    [:h3 "test ok"]
-   [:button {:on-click #(snarks/prove (:circuit @app-state))} "Prove"]
+   [:button
+    {:on-click (fn []
+                 (let [prf (snarks/prove
+                             (:circuit @app-state)
+                             (:vk-proof @app-state))]
+                   (println "Received prf" prf)))}
+    "Prove"]
    [:p (str (.-nConstraints (:circuit (rum/react app-state))))]
    [:p (str (:vk-proof (rum/react app-state)))]])
 

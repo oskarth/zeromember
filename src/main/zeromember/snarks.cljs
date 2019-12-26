@@ -77,15 +77,18 @@
   (clj->js {"a" "123"
             "b" "456"}))
 
-(defn prove [circuit]
+(defn prove [circuit vk-proof]
   (let [input static-input
-        witness (. circuit calculateWitness input)]
+        witness (. circuit calculateWitness input)
+        raw-proof (. zksnark/groth genProof vk-proof witness)
+        proof (get (js->clj raw-proof) "proof")
+        public-signals (get (js->clj raw-proof) "publicSignals") ]
 
   (println "snarks/prove input" input)
   (println "snarks/prove witness" witness)
-  (println "snarks/prove")
-  (str "a proof")
-  ))
+  (println "snarks/prove proof" proof)
+  (println "snarks/prove public-signals" public-signals)
+  proof))
 
 
 
@@ -99,10 +102,6 @@
 
 ;; Inspect circuit
 ;; (.-nConstraints circuit)
-
-(def raw-proof (. zksnark/groth genProof vk-proof witness))
-(def proof (get (js->clj raw-proof) "proof"))
-(def public-signals (get (js->clj raw-proof) "publicSignals"))
 
 ;; Verifier
 (def vk-verifier
